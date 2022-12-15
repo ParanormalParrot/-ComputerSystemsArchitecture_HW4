@@ -1,0 +1,11 @@
+Group №1 is exploring area №1
+Group №1 has explored area №1 and found no treasure.
+Group №1 is exploring area №4
+Group №1 has explored area №4 and found no treasure.
+Group №1 is exploring area №5
+Group №1 has found treasure in area №5!
+Group №2 is exploring area №2
+Group №2 has explored area №2 and found no treasure.
+Group №3 is exploring area №3
+Group №3 has explored area №3 and found no treasure.
+Group №1 have found treasure in area №5 at coordinates 5 6.

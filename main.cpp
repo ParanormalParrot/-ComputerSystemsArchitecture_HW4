@@ -43,10 +43,10 @@ void *pirate_group(void *ptr) {
         if (isFileIO) {
             std::ofstream out;
             out.open(params[3], std::ios::app);
-            out << "Group №" << group_number << " have explored area №" << area_number << ".\n";;
+            out << "Group №" << group_number << " is exploring area №" << area_number << ".\n";;
             out.close();
         }
-        std::cout << "Group №" << group_number << " have moved to area №" << area_number << "\n";
+        std::cout << "Group №" << group_number << " is exploring area №" << area_number << "\n";
         pthread_mutex_unlock(&mutex2);
         if (area_number <= number_of_areas) {
             for (int i = 0; i < area_square && (x < 20 && y < 20) && !treasure_found; ++i) {
@@ -57,16 +57,17 @@ void *pirate_group(void *ptr) {
                         if (isFileIO) {
                             std::ofstream out;
                             out.open(params[3], std::ios::app);
-                            out << "Group №" << group_number << " have found treasure in area №" << area_number << "!"
+                            out << "Group №" << group_number << " has found treasure in area №" << area_number << "!"
                                 << "\n";
                             out.close();
                         }
-                        std::cout << "Group №" << group_number << " have found treasure in area №" << area_number << "!"
+                        std::cout << "Group №" << group_number << " has found treasure in area №" << area_number << "!"
                                   << "\n";
                         pthread_mutex_unlock(&mutex2);
-                        answer = "Group №" + std::to_string(group_number) + " have found treasure in area №" +
+                        answer = "Group №" + std::to_string(group_number) + " has found treasure in area №" +
                                  std::to_string(area_number) + " at coordinates " + std::to_string(x) + " " +
                                  std::to_string(y) + ".\n";
+                        return nullptr;
                     }
                 }
                 x++;
@@ -80,11 +81,11 @@ void *pirate_group(void *ptr) {
             if (isFileIO) {
                 std::ofstream out;
                 out.open(params[3], std::ios::app);
-                out << "Group №" << group_number << " have explored area №" << area_number << " and found no treasure"
+                out << "Group №" << group_number << " has explored area №" << area_number << " and found no treasure"
                     << ".\n";
                 out.close();
             }
-            std::cout << "Group №" << group_number << " have explored area №" << area_number << " and found no treasure"
+            std::cout << "Group №" << group_number << " has explored area №" << area_number << " and found no treasure"
                       << ".\n";
             pthread_mutex_unlock(&mutex2);
         } else {
@@ -94,12 +95,12 @@ void *pirate_group(void *ptr) {
     return nullptr;
 }
 
-
 int main(int argc, char **argv) {
     int number_of_groups;
     bool flag = false;
     params = argv;
-    if (argc == 4) {
+    if (argc == 6) {
+        // Ввод через аргументы командной строки
         if (*argv[1] == 'i') {
             try {
                 tr_i = std::stoi(argv[2]);
@@ -130,11 +131,12 @@ int main(int argc, char **argv) {
         }
 
     } else if (argc == 2 && *argv[1] == 'r') {
-        srand(unsigned(time(0)));
-        tr_i = rand() % 40;
-        tr_j = rand() % 40;
-        number_of_groups = rand() % 80;
-        number_of_areas = rand() % 160;
+        // Случайная генерация значений
+        srand((unsigned int)time(NULL));
+        tr_i = rand() % 19;
+        tr_j = rand() % 19;
+        number_of_groups = rand() % 45 + 1;
+        number_of_areas = rand() % 55 + 1;
         std::cout << "treasure vertical coordinate: " << tr_i << "\n";
         std::cout << "treasure horizontal coordinate: " << tr_j << "\n";
         std::cout << "number of groups: " << number_of_groups << "\n";
@@ -143,6 +145,7 @@ int main(int argc, char **argv) {
         flag = true;
     }
     if (flag) {
+        // Ввод через консоль
         std::cout << "Введите координату сокровища по вертикали(0 - 19):";
         std::cin >> tr_i;
         while (tr_i < 0 || tr_i > 19) {
@@ -173,6 +176,7 @@ int main(int argc, char **argv) {
         }
     }
     if (isFileIO) {
+        // Ввод через файл
         FILE *f = fopen(argv[2], "r");
         fscanf(f, "%d %d %d %d", &tr_i, &tr_j, &number_of_groups, &number_of_areas);
         fclose(f);
@@ -194,6 +198,7 @@ int main(int argc, char **argv) {
     for (int i = 0; i < number_of_groups; ++i) {
         pthread_join(thread[i], nullptr);
     }
+    // Выводим результат
     if (isFileIO) {
         std::ofstream out;
         out.open(params[3], std::ios::app);
