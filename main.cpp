@@ -51,6 +51,7 @@ void *pirate_group(void *ptr) {
         if (area_number <= number_of_areas) {
             for (int i = 0; i < area_square && (x < 20 && y < 20) && !treasure_found; ++i) {
                 if (x <= 19) {
+                    // Поиск сокровища
                     if (island[x][y]) {
                         treasure_found = true;
                         pthread_mutex_lock(&mutex2);
@@ -61,6 +62,7 @@ void *pirate_group(void *ptr) {
                                 << "\n";
                             out.close();
                         }
+                        // Вывод сообщения об успехе.
                         std::cout << "Group №" << group_number << " has found treasure in area №" << area_number << "!"
                                   << "\n";
                         pthread_mutex_unlock(&mutex2);
